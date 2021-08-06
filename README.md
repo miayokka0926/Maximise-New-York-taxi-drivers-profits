@@ -1,6 +1,6 @@
 # MAST30034 Project 1 - Quantitative Analysis
-- Student Name: _Insert Name_
-- Student ID: _Insert Student ID_
+- Student Name: Yuxin Ma
+- Student ID: 1067799
 - Due Date: Friday 13th of August 11:59:00 am (AEST).
 - Report Link: _Insert Report Link if applicable_
 
