@@ -1,0 +1,149 @@
+---
+title: "ADS_p1_model"
+author: "Yuxin Ma"
+date: "12/08/2021"
+output: pdf_document
+---
+
+```{r}
+library(scales)
+library(speedglm)
+library(cvms)
+library(faraway)
+library(broom)
+library(fitdistrplus)
+#library(tibble)
+library("performance")
+library(dataPreparation)
+```
+
+```{r}
+tips_sample <- read.csv("/Users/miayokka0926/Downloads/mast30034_2021_s2_project_1-miayokka0926/preprocessed_data/tips_sample.csv")
+```
+### find factors
+```{r}
+# set time hr as categorical factor
+tips_sample$weekday <- factor(tips_sample$weekday)
+tips_sample$holiday <- factor(tips_sample$holiday)
+tips_sample$Extrem <- factor(tips_sample$Extrem)
+tips_sample$time_hr <- factor(tips_sample$time_hr)
+tips_sample$PRCP <- factor(tips_sample$PRCP)
+tips_sample$SNOW <- factor(tips_sample$SNOW)
+tips_sample$tolls_amount <- factor(tips_sample$tolls_amount)
+
+```
+### tarin test split and scale
+```{r}
+conti_var = c('passenger_count', 'trip_distance', 'fare_amount', 'total_amount', 'TAVG', 'PULocationID', 'tip_amount')
+relevant_var = c('passenger_count', 'trip_distance', 'PULocationID','fare_amount', 'total_amount', 'holiday', 'PRCP', 'SNOW', 'TAVG', 'Extrem', 'weekday', 'time_hr', 'tip_amount')
+pos_tips_sample <- tips_sample[tips_sample$tip_amount > 0,]
+pos_train_ind <- sample(seq_len(nrow(pos_tips_sample)), size = 0.75*nrow(pos_tips_sample))
+pos_train <- pos_tips_sample[pos_train_ind, relevant_var]
+pos_test <- pos_tips_sample[-pos_train_ind, relevant_var]
+
+train_ind <- sample(seq_len(nrow(tips_sample)), size = 0.75*nrow(tips_sample))
+train <- tips_sample[train_ind, relevant_var]
+test <- tips_sample[-train_ind, relevant_var]
+
+scales <- build_scales(train, cols = conti_var, verbose = TRUE)
+train_scales <- fast_scale(train, scales = scales, verbose = TRUE)
+test_scales <- fast_scale(test, scales = scales, verbose = TRUE)
+
+pos_scales <- build_scales(pos_train, cols = conti_var, verbose = TRUE)
+pos_train_scales <- fast_scale(pos_train, scales = pos_scales, verbose = TRUE)
+pos_test_scales <- fast_scale(pos_test, scales = pos_scales, verbose = TRUE)
+```
+
+```{r}
+hist(pos_tips_sample$tip_amount)
+```
+
+```{r}
+normal_dist <- fitdist(tips_sample$tip_amount, "norm")
+plot(normal_dist)
+```
+```{r}
+gamma_dist <- fitdist(pos_tips_sample$tip_amount, "gamma")
+plot(gamma_dist)
+```
+
+### glm model gamma distribution with log link, remove all zeros
+```{r}
+glm_model <- glm(tip_amount ~ .-TAVG - Extrem, data = pos_train, family = Gamma(link="log"))
+# model <- step(model)
+summary(glm_model)
+```
+
+### gaussian model with zeros
+```{r}
+lm_model <- lm(tip_amount ~ .-Extrem - SNOW - PRCP, data = train_scales)
+summary(lm_model)
+```
+
+```{r}
+anova(glm_model, lm_model)
+```
+### evaluate r2
+```{r}
+(r2(glm_model))
+```
+```{r}
+(r2(lm_model))
+```
+
+### evaluate mse(train), glm
+```{r}
+glm_train_pred <- predict(glm_model, pos_train)
+training <- data.frame(cbind(actual = pos_train$tip_amount, predict = exp(glm_train_pred), (pos_train$tip_amount-exp(glm_train_pred))^2))
+(glm_train_mse <- sqrt(mean(training[,3])))
+
+```
+
+### mse(train), lm
+```{r}
+lm_train_pred <- predict(lm_model, train_scales)
+lm_training <- data.frame(cbind(actual = train_scales$tip_amount, predict = lm_train_pred, (train_scales$tip_amount-lm_train_pred)^2))
+(lm_train_mse <- sqrt(mean(lm_training[,3])))
+```
+
+### mse(test), glm
+```{r}
+glm_test_pred <- predict(glm_model, pos_test)
+testing <- data.frame(cbind(actual = pos_test$tip_amount, predict = exp(glm_test_pred), (pos_test$tip_amount-exp(glm_test_pred))^2))
+(glm_test_mse <- sqrt(mean(testing[,3])))
+```
+
+### mse(test), lm
+```{r}
+lm_test_pred <- predict(lm_model, test_scales)
+lm_testing <- data.frame(cbind(actual = test_scales$tip_amount, predict = lm_test_pred, (test_scales$tip_amount-lm_test_pred)^2))
+(lm_test_mse <- sqrt(mean(lm_testing[,3])))
+```
+
+
+```{r}
+par(mfrow=c(2,2))
+plot(lm_model)
+
+```
+
+```{r}
+final_model <- lm(tip_amount ~ .-Extrem - SNOW - PRCP, data = train_scales[-c(2856686, 3557880, 820856, 2431059)])
+summary(final_model)
+```
+
+#evaluation
+```{r}
+r2(final_model)
+```
+
+```{r}
+lm_train_pred <- predict(final_model, train_scales)
+lm_training <- data.frame(cbind(actual = train_scales$tip_amount, predict = lm_train_pred, (train_scales$tip_amount-lm_train_pred)^2))
+(lm_train_mse <- sqrt(mean(lm_training[,3])))
+```
+```{r}
+lm_test_pred <- predict(final_model, test_scales)
+lm_testing <- data.frame(cbind(actual = test_scales$tip_amount, predict = lm_test_pred, (test_scales$tip_amount-lm_test_pred)^2))
+(lm_test_mse <- sqrt(mean(lm_testing[,3])))
+```
