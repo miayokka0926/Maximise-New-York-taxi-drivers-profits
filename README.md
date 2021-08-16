@@ -1,19 +1,18 @@
 # MAST30034 Project 1 - Quantitative Analysis
 - Student Name: Yuxin Ma
 - Student ID: 1067799
-- Due Date: Friday 13th of August 11:59:00 am (AEST).
-- Report Link: _Insert Report Link if applicable_
 
 # Dependencies
 - Language: _i.e Python 3.8.3 and/or R 4.05_
-- Packages / Libraries: _i.e pandas, pyspark, sklearn, statsmodels, folium, etc... OR add a `requirements.txt`_
+- Packages / Libraries: pandas, pyspark, folium, matplotlib, geopandas OR add a `requirements.txt`_
 
 # Datasets
-- NYC TLC: https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page
-- External dataset 1: (optional)
-- External dataset 2: (optional)
-- ...
-- External dataset n: (optional)
+a) NYC TLC: https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page
+main set: 2018-01 - 2018-09
+test set: 2019-01
+b) External dataset 1: https://www.ncei.noaa.gov/orders/cdo/2676651.csv
+c) External dataset 2(for testing): https://www.ncei.noaa.gov/orders/cdo/2684242.csv
+
 
 # Directory
 _Change this to fit your needs when you have started the project._
@@ -21,16 +20,14 @@ _Change this to fit your needs when you have started the project._
 - `preprocessed_data`: Contains all the preprocessed data files. You may add this folder to `.gitignore` if your files are too large, but your script should automaticaally generate files here given the correct dataset in `raw_data`.
 - `plots`: Output and save all your figures here.
 - `code`: Keep all notebooks and scripts in this folder. Ensure that you have notebooks for each _stage_ of code. Here's an example:
-    - Notebook 1 for "Extracting Data" and "Installing Packages".
-    - Notebook 2 for "Preprocessing" and/or "Exploratory Data Analysis".
-    - Notebook 3 for "Analysis and Visualisation".
-    - Notebook 4 for "Statistical Modelling".
 - `deprecated`: A folder to store "old code" that **you do not use anymore** or code that you experimented with, but decided to not go ahead. This is useful in case you ever need to come back to an older iteration of code or to express your other approaches to the problem.
 
-# Other
-_Feel free to add any other information that you deem useful._
-- (You may delete these dot points once you have read and understood them)
-- You should avoid uploading your datasets as they are far too large (without using git LFS). Please add them to the `.gitignore` file or remove them when pushing changes.
-- You can delete all the `.gitkeep` files located inside each empty directory. These just exist to give the folder directory templates as GitHub doesn't keep track of empty directories. 
-- Attatch a `requirements.txt` if you are using non-standard Python libraries that are not officially taught or covered in this subject. 
-- Remember, there are marks awarded for readability in your code, as well as reproducability.
+# instruction for reading the notebooks
+Before running any code, please download the data a), b), c) from specified source
+I also put the external data into preprocessed_data folder. 
+1. first pre-process data with "yellow data preprocessing.ipynb"
+2. Then concat data month by month with "concat monthly data and seasonal visualisation.ipynb". There are several plots generated in this notebook, but they do not appear in the report.
+3. run "visualisations with weather data set.ipynb", most plots appear here. This one is important since the sample data set generated here is used in the entire research proocess.
+4. Then, the geo-map are plots in "geo-map visualisation.ipynb", I also use the sample set generated in setp 3 to plot.
+5. Then "ads_model.Rmd", this one build the GLM and LM model.
+6. Test data is generated in "Test set generation.ipynb"
