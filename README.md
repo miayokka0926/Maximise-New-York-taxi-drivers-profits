@@ -1,15 +1,16 @@
-# MAST30034 Project 1 - Quantitative Analysis
+# MAST30034 Project 1 - Insights on New York taxi drivers' profits maximisation
 - Student Name: Yuxin Ma
 - Student ID: 1067799
 
 # Dependencies
 - Language: _i.e Python 3.8.3 and/or R 4.05_
-- Packages / Libraries: pandas, pyspark, folium, matplotlib, geopandas OR add a `requirements.txt`_
+- Packages / Libraries: pandas, pyspark, folium, matplotlib, geopandas
 
 # Datasets
-a) NYC TLC: https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page
-main set: 2018-01 - 2018-09
-test set: 2019-01
+a) NYC TLC: https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page 
+  training dataset: 2018-01 - 2018-09
+  test dataset: 2019-01
+  features: 
 b) External dataset 1: https://www.ncei.noaa.gov/orders/cdo/2676651.csv
 c) External dataset 2(for testing): https://www.ncei.noaa.gov/orders/cdo/2684242.csv
 
