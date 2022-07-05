@@ -28,6 +28,9 @@
 # Objective
 - To estimate NY yellow taxi drivers' tips amount for a trip with linear model, thus provide insights on profit maximization, including time and plance to pick-up customers, as well as other possible factors that matter.
 
+# Conclusion
+Few recommendations could give to yellow taxi drivers to help maximise their profits with certain time and efforts devoted and reduce the probability of running in empty cars. According to what has been discussed in sections 4 and 5, the drivers can expect that 95% of passengers who pay for their trip by credit card will offer 10% of the total fare as tips to the drivers. The first recommendation is that drivers could try to pick up customers in the Manhattan district during the rush hours on weekdays. The drivers could expect 1.5 times higher pickup demands as well as tips compared with running services in other regions at other times. Second, people are more likely to call a taxi on public holidays, so it is always a good idea to drive more hours on holidays, and they may have a chance to gain more if the time is running late at night. Finally, it might be surprising to many drivers that, if raining or snowing or other extreme weathers occur, they will not be able to gain extra tips or take more business. Since there is no clue showing that demands or tips are associated with bad weather. On the contrary, drivers have to spend more time driving in bad weather and have a higher chance of experiencing severe car accidents. Thus, it is not necessary to go out to work on those days.
+
 
 # instruction for reading the notebooks
 Before running any code, please download the data a), b), c) from specified source
@@ -38,3 +41,4 @@ I also put the external data into preprocessed_data folder.
 4. Then, the geo-map are plots in "geo-map visualisation.ipynb", I also use the sample set generated in setp 3 to plot.
 5. Then "ads_model.Rmd", this one build the GLM and LM model.
 6. Test data is generated in "Test set generation.ipynb"
+
